@@ -89,7 +89,7 @@ def render_one_scene(base_dir, scene_name, picture_name_list):
         render.Clear()
 
         result_name = base_name + '_s' + group_name + '_' + ins_name + '.png'
-        full_result_name = os.path.join(base_dir, 'seg', result_name)
+        full_result_name = os.path.join(base_dir, 'segs', result_name)
         sio.imsave(full_result_name, final_color)
         print('written', full_result_name)
 

@@ -39,7 +39,8 @@ def clear_one(base_dir, base_dir_geolayout, type):
         nz_name = base_name + '_d' + group_name + '_' + ins_name + '_nz.png'
         boundary_name = base_name + '_d' + group_name + '_' + ins_name + '_boundary.png'
         radius_name = base_name + '_d' + group_name + '_' + ins_name + '_radius.png'
-        intrinsic_name = base_name + '_d' + group_name + '_' + ins_name + '.txt'
+        intrinsic_name = base_name + '_pose_' + group_name + '_' + ins_name + '.txt'
+        seg_name = base_name + '_s' + group_name + '_' + ins_name + '.png'
 
         save_remove(os.path.join(base_dir, 'image', image_name))
         save_remove(os.path.join(base_dir, 'depth', depth_name))
@@ -48,7 +49,8 @@ def clear_one(base_dir, base_dir_geolayout, type):
         save_remove(os.path.join(base_dir, 'norm', nz_name))
         save_remove(os.path.join(base_dir, 'norm', boundary_name))
         save_remove(os.path.join(base_dir, 'norm', radius_name))
-        save_remove(os.path.join(base_dir, 'camera', intrinsic_name))
+        save_remove(os.path.join(base_dir, 'intrinsic', intrinsic_name))
+        save_remove(os.path.join(base_dir, 'seg', seg_name))
 
 def clear_norm(base_dir):
     ''' 
