@@ -1,6 +1,5 @@
 import numpy as np
 import skimage.io as sio
-from plyfile import *
 
 
 def LoadPLY(model_path):
@@ -9,21 +8,32 @@ def LoadPLY(model_path):
     input: model_path
     return: vertexs, vertex_colors, faces
     '''
-    plydata = PlyData.read(model_path)
-    vertexs = plydata['vertex']
-    faces = plydata['face']
+    f = open(model_path, 'r')
+    lines = f.read().split('\n')
+    f.close()
+    vertex_num = int(lines[2].split()[-1])
+    face_num = int(lines[9].split()[-1])
     my_vertexs = []
     my_vertex_colors = []
     my_faces = []
-    for vertex in vertexs:
-        x, y, z, r, g, b = vertex
+    for i in range(vertex_num):
+        line = lines[12 + i]
+        words = line.split()
+        x = float(words[0])
+        y = float(words[1])
+        z = float(words[2])
+        r = float(words[3])
+        g = float(words[4])
+        b = float(words[5])
         my_vertexs.append([x, y, z])
         my_vertex_colors.append([r / 255, g / 255, b / 255])
-
-
-    for face in faces: 
-        a, b, c = face[0]
-        f = [int(a), int(b), int(c)]
+    for i in range(face_num):
+        line = lines[12 + vertex_num + i]
+        words = line.split()
+        a = int(words[1])
+        b = int(words[2])
+        c = int(words[3])
+        f = [a, b, c]
         my_faces.append(f)
     
     F = np.array(my_faces, dtype = 'int32')
