@@ -13,6 +13,8 @@ from PIL import Image
 import glob
 import PIL
 
+
+
 def load_image(file_name):
     '''
     description: used in loading RGB image
@@ -55,18 +57,19 @@ def convert_segs(base_dir):
     parameter: the base dir of pretrained data
     return: empty
     '''
-    for filename in glob.glob(os.path.join(base_dir, 'image', '*.jpg')):
-        base_name = filename[:-9]
-        group_name = filename[-7]
-        ins_name = filename[-5]
-        full_name = base_name + '_s' + group_name + '_' + ins_name + '.png'
-        original_place = os.path.join(base_dir, 'segs', full_name)
-        save_place = os.path.join(base_dir, 'seg', full_name)
-        original_array = load_image(original_place)
-        original_array_sum = np.sum(original_array, axis = 0)
-        seg = (original_array_sum == 0)
-        save_seg(seg, save_place)
-        print('written', save_place)
+    for dir_name in glob.glob(os.path.join(base_dir, 'segs')):
+        for file_name in glob.glob(os.path.join(dir_name, '.png')):
+            base_name = file_name[:-9]
+            group_name = file_name[-7]
+            ins_name = file_name[-5]
+            full_name = base_name + '_s' + group_name + '_' + ins_name + '.png'
+            original_place = os.path.join(base_dir, 'segs', dir_name, full_name)
+            save_place = os.path.join(base_dir, 'seg', full_name)
+            original_array = load_image(original_place)
+            original_array_sum = np.sum(original_array, axis = 0)
+            seg = (original_array_sum == 0)
+            save_seg(seg, save_place)
+            print('written', save_place)
 
 
 def get_seg_accuracy(base_dir, base_dir_geolayout):

@@ -32,7 +32,7 @@ def clear_one(base_dir, base_dir_geolayout, type):
         base_name = filename[:-9]
         group_name = filename[-7]
         ins_name = filename[-5]
-        image_name = filename 
+        image_name = base_name + '_i' + group_name + '_' + ins_name + '.png'
         depth_name = base_name + '_d' + group_name + '_' + ins_name + '.png'
         nx_name = base_name + '_d' + group_name + '_' + ins_name + '_nx.png'
         ny_name = base_name + '_d' + group_name + '_' + ins_name + '_ny.png'
@@ -51,6 +51,46 @@ def clear_one(base_dir, base_dir_geolayout, type):
         save_remove(os.path.join(base_dir, 'norm', radius_name))
         save_remove(os.path.join(base_dir, 'intrinsic', intrinsic_name))
         save_remove(os.path.join(base_dir, 'seg', seg_name))
+
+def clear_noisy_data(base_dir):
+    '''
+    description: remove useless noisy data from the dataset
+    parameter: the base dir of dataset
+    return: empty
+    '''
+    remove_list = ['B6ByNegPMKs', 'vyrNrziPKCB']
+    for scene_id in remove_list:
+        conf_name = os.path.join(base_dir, 'data_list', scene_id + '.conf')
+        f = open(conf_name, 'r')
+        lines = f.read().split('\n')
+        f.close()
+        for line in lines:
+            words = line.split()
+            if words[0] == 'scan':
+                base_name = words[1][:-9]
+                group_name = words[1][-7]
+                ins_name = words[1][-5]
+                image_name = base_name + '_i' + group_name + '_' + ins_name + '.png'
+                depth_name = base_name + '_d' + group_name + '_' + ins_name + '.png'
+                nx_name = base_name + '_d' + group_name + '_' + ins_name + '_nx.png'
+                ny_name = base_name + '_d' + group_name + '_' + ins_name + '_ny.png'
+                nz_name = base_name + '_d' + group_name + '_' + ins_name + '_nz.png'
+                boundary_name = base_name + '_d' + group_name + '_' + ins_name + '_boundary.png'
+                radius_name = base_name + '_d' + group_name + '_' + ins_name + '_radius.png'
+                intrinsic_name = base_name + '_pose_' + group_name + '_' + ins_name + '.txt'
+                seg_name = base_name + '_s' + group_name + '_' + ins_name + '.png'
+                
+                save_remove(os.path.join(base_dir, 'image', image_name))
+                save_remove(os.path.join(base_dir, 'depth', depth_name))
+                save_remove(os.path.join(base_dir, 'norm', nx_name))
+                save_remove(os.path.join(base_dir, 'norm', ny_name))
+                save_remove(os.path.join(base_dir, 'norm', nz_name))
+                save_remove(os.path.join(base_dir, 'norm', boundary_name))
+                save_remove(os.path.join(base_dir, 'norm', radius_name))
+                save_remove(os.path.join(base_dir, 'intrinsic', intrinsic_name))
+                save_remove(os.path.join(base_dir, 'seg', seg_name))
+
+
 
 def clear_norm(base_dir):
     ''' 
@@ -105,7 +145,7 @@ def main():
     parser.add_argument('--base_dir_geolayout', default = '/home/shenguanlin/geolayout', type = str)
     args = parser.parse_args()
 
-    
+    clear_noisy_data(args.base_dir)
     clear_one(args.base_dir, args.base_dir_geolayout, 'training')
     clear_one(args.base_dir, args.base_dir_geolayout, 'validation')
     clear_one(args.base_dir, args.base_dir_geolayout, 'testing')
