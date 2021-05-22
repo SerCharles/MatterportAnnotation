@@ -66,7 +66,7 @@ def clear_noisy_data(base_dir):
         f.close()
         for line in lines:
             words = line.split()
-            if words[0] == 'scan':
+            if len(words) >  0 and words[0] == 'scan':
                 base_name = words[1][:-9]
                 group_name = words[1][-7]
                 ins_name = words[1][-5]

@@ -48,6 +48,8 @@ def save_seg(data, file_name):
     parameter: data, filename
     return: empty
     '''
+    if os.path.exists(file_name):
+        return
     seg_image = Image.fromarray(np.uint8(data)).convert('I')
     seg_image.save(file_name)
 
@@ -57,19 +59,21 @@ def convert_segs(base_dir):
     parameter: the base dir of pretrained data
     return: empty
     '''
-    for dir_name in glob.glob(os.path.join(base_dir, 'segs')):
-        for file_name in glob.glob(os.path.join(dir_name, '.png')):
-            base_name = file_name[:-9]
-            group_name = file_name[-7]
-            ins_name = file_name[-5]
+    for dir_name in glob.glob(os.path.join(base_dir, 'segs', '*')):
+        for file_name in glob.glob(os.path.join(dir_name, '*.png')):
+            name = file_name.split(os.sep)[-1]
+            base_name = name[:-9]
+            group_name = name[-7]
+            ins_name = name[-5]
             full_name = base_name + '_s' + group_name + '_' + ins_name + '.png'
             original_place = os.path.join(base_dir, 'segs', dir_name, full_name)
             save_place = os.path.join(base_dir, 'seg', full_name)
             original_array = load_image(original_place)
-            original_array_sum = np.sum(original_array, axis = 0)
+            original_array_sum = np.sum(original_array, axis = 2)
             seg = (original_array_sum == 0)
             save_seg(seg, save_place)
             print('written', save_place)
+
 
 
 def get_seg_accuracy(base_dir, base_dir_geolayout):
@@ -135,7 +139,8 @@ def main():
     return: empty
     '''
     parser = argparse.ArgumentParser(description = '')
-    parser.add_argument('--base_dir', default = '/home/shenguanlin/geolayout_pretrain', type = str)
+    #parser.add_argument('--base_dir', default = '/home/shenguanlin/geolayout_pretrain', type = str)
+    parser.add_argument('--base_dir', default = '/data/sgl/geolayout_pretrain', type = str)
     parser.add_argument('--base_dir_geolayout', default = '/home/shenguanlin/geolayout', type = str)
     args = parser.parse_args()
 
