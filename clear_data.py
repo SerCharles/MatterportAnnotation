@@ -32,7 +32,7 @@ def clear_one(base_dir, base_dir_geolayout, type):
         base_name = filename[:-9]
         group_name = filename[-7]
         ins_name = filename[-5]
-        image_name = base_name + '_i' + group_name + '_' + ins_name + '.png'
+        image_name = base_name + '_i' + group_name + '_' + ins_name + '.jpg'
         depth_name = base_name + '_d' + group_name + '_' + ins_name + '.png'
         nx_name = base_name + '_d' + group_name + '_' + ins_name + '_nx.png'
         ny_name = base_name + '_d' + group_name + '_' + ins_name + '_ny.png'
@@ -70,7 +70,7 @@ def clear_noisy_data(base_dir):
                 base_name = words[1][:-9]
                 group_name = words[1][-7]
                 ins_name = words[1][-5]
-                image_name = base_name + '_i' + group_name + '_' + ins_name + '.png'
+                image_name = base_name + '_i' + group_name + '_' + ins_name + '.jpg'
                 depth_name = base_name + '_d' + group_name + '_' + ins_name + '.png'
                 nx_name = base_name + '_d' + group_name + '_' + ins_name + '_nx.png'
                 ny_name = base_name + '_d' + group_name + '_' + ins_name + '_ny.png'
@@ -98,7 +98,7 @@ def clear_norm(base_dir):
     parameter: the base dir of pretrained data
     return: empty
     '''
-    for name in glob.glob(os.path.join(base_dir, 'image', '*.jpg')):
+    for name in glob.glob(os.path.join(base_dir, 'depth', '*.png')):
         filename = name.split(os.sep)[-1]
         base_name = filename[:-9]
         group_name = filename[-7]
@@ -145,6 +145,7 @@ def main():
     parser.add_argument('--base_dir_geolayout', default = '/home/shenguanlin/geolayout', type = str)
     args = parser.parse_args()
 
+    
     clear_noisy_data(args.base_dir)
     clear_one(args.base_dir, args.base_dir_geolayout, 'training')
     clear_one(args.base_dir, args.base_dir_geolayout, 'validation')
