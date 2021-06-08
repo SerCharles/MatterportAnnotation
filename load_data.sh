@@ -1,5 +1,5 @@
 
-base_code=/home/shenguanlin/Pretrain/data
+base_code=/home/shenguanlin/MatterportAnnotation
 base_source=/data/sgl/matterport/v1/scans
 base_target=/home/shenguanlin/geolayout_pretrain
 base_target_geolayout=/home/shenguanlin/geolayout
@@ -83,8 +83,8 @@ do
 
     rm -rf $base_target/$file
 done
-#cd $base_code
-#python preprocess_data.py --base_dir=$base_target --base_dir_geolayout=$base_target_geolayout
-#cd $base_target
-#rm image/Thumbs.db
-#rm -rf camera_pre
+cd $base_code
+python preprocess_data.py --base_dir=$base_target --base_dir_geolayout=$base_target_geolayout
+cd $base_target
+rm image/Thumbs.db
+rm -rf camera_pre
